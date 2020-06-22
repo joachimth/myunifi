@@ -1,0 +1,9 @@
+services:
+ - docker
+install:
+  - docker build -t myunifi .
+  - docker run -d -p 8443:8443 -e RUNAS_UID0=true --name myunifi myunifi
+script:
+  - docker ps | grep -q myunifi
+  - docker logs myunifi
+  - sleep 10 && curl -kILs --fail https://127.0.0.1:8443 || exit 1
